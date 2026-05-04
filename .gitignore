@@ -1,0 +1,17 @@
+# Sanal ortam
+venv/
+env/
+.venv/
+
+# Python önbellek dosyaları
+__pycache__/
+*.pyc
+
+# IDE ayarları (isteğe bağlı)
+.vscode/
+
+# İşletim sistemi dosyaları
+.DS_Store
+Thumbs.db
+
+attendance_list.xlsx
