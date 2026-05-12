@@ -14,6 +14,114 @@ from face_analyzer import FaceAnalyzer
 from student_manager import StudentManager
 
 
+UI_TEXT = {
+    "tr": {
+        "app_title": "AYBÜ SmartAttend | Otomatik Yoklama",
+        "app_subtitle": "Otonom Yoklama",
+        "language": "Dil",
+        "language_help": "Arayüz dilini seçin.",
+        "session_control": "⚙️ Oturum Kontrolü",
+        "start": "🟢 Başlat",
+        "stop": "🛑 Durdur",
+        "camera_settings": "📷 Kamera Ayarları",
+        "camera_index": "Kamera cihaz numarası",
+        "camera_help": "Telefon kameranız macOS'ta harici kamera olarak görünüyorsa buradan seçebilirsiniz. Yaygın değerler 1 veya 2'dir.",
+        "camera_caption": "Telefonunuz kamera olarak görünmüyorsa Camo veya DroidCam gibi bir uygulama kullanın.",
+        "live_stats": "📊 Canlı İstatistikler",
+        "export_data": "⬇️ Veri Dışa Aktarma",
+        "download_excel": "📑 Excel Raporunu İndir",
+        "tab_dashboard": "🎥 Canlı Yoklama Paneli",
+        "tab_student": "➕ Yeni Öğrenci Ekle",
+        "attendance_ratio": "📊 Yoklama Oranı",
+        "present_students": "👥 Gelen Öğrenciler",
+        "tracking_system": "🎥 Otonom Takip Sistemi",
+        "session_active": "🟢 Durum: Oturum aktif, yüzler bekleniyor...",
+        "session_closed": "⚪ Durum: Oturum kapalı. Soldaki 'Başlat' düğmesine basın.",
+        "open_camera": "📸 Kamerayı Aç",
+        "stop_stream": "⏹️ Akışı Durdur",
+        "upload_video": "🎬 İşlenecek Video Dosyası Yükle",
+        "process_video": "▶️ Yüklenen Videoyu İşle",
+        "start_warning": "⚠️ Lütfen önce soldan yoklama oturumunu 'Başlat' düğmesiyle açın!",
+        "camera_error": "⚠️ Kamera açılamadı. Kenar çubuğundaki kamera numarasını değiştirin (0, 1, 2, ...).",
+        "stream_active": "🔄 İşleniyor... Akış aktif.",
+        "video_finished": "Video bitti ya da kameraya erişilemiyor.",
+        "security_alert": "⚠️ GÜVENLİK UYARISI: Tanımlanamayan kişi tespit edildi!",
+        "session_warning": "⚠️ **Uyarı**: Bu oturumda tanımlanamayan kişiler tespit edildi ve hâlâ sınıfta olabilir. Lütfen yoklama listesini kontrol edin.",
+        "close": "Kapat",
+        "student_portal": "📝 Öğrenci Kayıt Paneli",
+        "student_portal_desc": "Yeni bir öğrenci burada kaydedilir. Yapay zekâ kodlaması veritabanını otomatik günceller.",
+        "first_name": "Ad",
+        "last_name": "Soyad",
+        "student_id": "Öğrenci No",
+        "image_upload": "Net Yüz Fotoğrafı Yükleyin",
+        "save_student": "Öğrenciyi Kaydet ve AI'yi Eğit ✓",
+        "mandatory_fields": "⚠️ Tüm alanlar (Ad, Soyad, Öğrenci No ve Fotoğraf) zorunludur!",
+        "saved_image": "📸 Görüntü başarıyla `{filename}` olarak kaydedildi",
+        "training": "🤖 Yeni yüz verisiyle AI eğitiliyor. Lütfen bekleyin...",
+        "encoding_ok": "✅ AI yüz kodlamaları başarıyla güncellendi!",
+        "encoding_fail": "❌ AI kodlama işlemi başarısız oldu:\n{stderr}",
+        "logo_error": "⚠️ Logo hatası: {error}",
+        "logo_missing": "(Lütfen logo.svg, logo.png veya logo.jpg ekleyin)",
+        "saved": "💾 Kaydedildi!",
+    },
+    "en": {
+        "app_title": "AYBÜ SmartAttend | Auto Attendance",
+        "app_subtitle": "Autonomous Attendance",
+        "language": "Language",
+        "language_help": "Choose the interface language.",
+        "session_control": "⚙️ Session Control",
+        "start": "🟢 Start",
+        "stop": "🛑 Stop",
+        "camera_settings": "📷 Camera Settings",
+        "camera_index": "Camera device index",
+        "camera_help": "Use your phone camera here if it appears as an external webcam on macOS. Common values are 1 or 2.",
+        "camera_caption": "If your phone is not listed as a webcam, use a companion app like Camo or DroidCam.",
+        "live_stats": "📊 Live Statistics",
+        "export_data": "⬇️ Data Export",
+        "download_excel": "📑 Download Excel Report",
+        "tab_dashboard": "🎥 Live Attendance Dashboard",
+        "tab_student": "➕ Add New Student",
+        "attendance_ratio": "📊 Attendance Ratio",
+        "present_students": "👥 Present Students",
+        "tracking_system": "🎥 Autonomous Tracking System",
+        "session_active": "🟢 Status: Session Active, Waiting for Faces...",
+        "session_closed": "⚪ Status: Session Closed. Click 'Start' in the sidebar.",
+        "open_camera": "📸 Open Camera",
+        "stop_stream": "⏹️ Stop Stream",
+        "upload_video": "🎬 Upload Video File for Processing",
+        "process_video": "▶️ Process Uploaded Video",
+        "start_warning": "⚠️ Please 'Start' the attendance session from the sidebar first!",
+        "camera_error": "⚠️ Camera could not be opened. Try a different camera index in the sidebar (0, 1, 2, ...).",
+        "stream_active": "🔄 Processing... Stream active.",
+        "video_finished": "Video finished or camera inaccessible.",
+        "security_alert": "⚠️ SECURITY ALERT: Unidentified Person Detected!",
+        "session_warning": "⚠️ **Warning**: Unrecognized persons were detected during this session and may still be present in the classroom. Please review the attendance log.",
+        "close": "Close",
+        "student_portal": "📝 Student Registration Portal",
+        "student_portal_desc": "Register a new student here. The AI encoding will automatically update and sync the database.",
+        "first_name": "First Name",
+        "last_name": "Last Name",
+        "student_id": "Student ID Number",
+        "image_upload": "Upload Clear Face Image",
+        "save_student": "Save Student & Train AI ✓",
+        "mandatory_fields": "⚠️ All fields (First Name, Last Name, Student ID, and Image) are mandatory!",
+        "saved_image": "📸 Image successfully saved as `{filename}`",
+        "training": "🤖 Training AI with new face data. Please wait...",
+        "encoding_ok": "✅ AI Face Encodings updated successfully!",
+        "encoding_fail": "❌ Failed to process AI encoding:\n{stderr}",
+        "logo_error": "⚠️ Logo error: {error}",
+        "logo_missing": "(Please add logo.svg, logo.png or logo.jpg)",
+        "saved": "💾 Saved!",
+    },
+}
+
+
+def t(key: str, **kwargs) -> str:
+    lang = st.session_state.get("language", "tr")
+    text = UI_TEXT.get(lang, UI_TEXT["en"]).get(key, key)
+    return text.format(**kwargs)
+
+
 st.set_page_config(
     page_title="AYBÜ SmartAttend | Auto Attendance",
     page_icon="🎓",
@@ -21,7 +129,6 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# 1. CSS ile Konteynerları "Karta" Dönüştür
 st.markdown("""
     <style>
     /* Ana arkaplanı çok hafif gri yap ki beyaz kartlar öne çıksın */
@@ -141,10 +248,75 @@ st.markdown("""
         font-size: 0.95rem !important;
         margin-bottom: 12px !important;
     }
+    /* Toast notification (bottom-right, closable) */
+    .toast-notification {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background: #b91c1c;
+        color: #ffffff;
+        padding: 20px 24px;
+        padding-right: 45px;
+        border-radius: 10px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        z-index: 10000;
+        max-width: 400px;
+        font-size: 14px;
+        line-height: 1.5;
+        animation: slideIn 0.4s ease-out;
+    }
+    .toast-notification h3 {
+        margin: 0 0 8px 0;
+        font-size: 16px;
+        font-weight: 700;
+    }
+    .toast-notification p {
+        margin: 0;
+        font-size: 13px;
+    }
+    .toast-close {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background: none;
+        border: none;
+        color: #ffffff;
+        font-size: 24px;
+        cursor: pointer;
+        padding: 0;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0.8;
+        transition: opacity 0.2s;
+    }
+    .toast-close:hover {
+        opacity: 1;
+    }
+    @keyframes slideIn {
+        from {
+            transform: translateX(400px);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    @keyframes fadeOut {
+        from {
+            opacity: 1;
+        }
+        to {
+            opacity: 0;
+        }
+    }
+    }
     """, unsafe_allow_html=True)
 
 
-# Initialize Session State
 if "initialized" not in st.session_state:
     with st.spinner("⏳ Loading AI Models... (Please wait)"):
         st.session_state.manager = StudentManager()
@@ -157,6 +329,9 @@ if "initialized" not in st.session_state:
         st.session_state.present_count = 0
         st.session_state.total_students = len(st.session_state.manager.students_df)
         st.session_state.camera_index = 1
+        st.session_state.session_unknown_detected = False
+        st.session_state.toast_dismissed = False
+        st.session_state.language = "en"
         st.session_state.initialized = True
         st.session_state.stop_video = False
 
@@ -189,7 +364,6 @@ def handle_attendance(student_id):
             st.session_state.live_list = pd.concat([new_record, st.session_state.live_list], ignore_index=True)
 
 
-# --- 3. SIDEBAR ---
 with st.sidebar:
     try:
         if os.path.exists("logo.svg"):
@@ -198,56 +372,66 @@ with st.sidebar:
                 base64_svg = base64.b64encode(f.read()).decode("utf-8")
             svg_uri = f"data:image/svg+xml;base64,{base64_svg}"
             st.markdown(
-                f'<div style="display: flex; justify-content: center; align-items: center; margin-bottom: 15px; padding: 5px;"><img src="{svg_uri}" style="width: 50px; height: 50px; border-radius: 8px;"></div>', 
+                f'<div style="display: flex; justify-content: center; align-items: center; margin-bottom: 18px; padding: 8px;"><img src="{svg_uri}" style="width: 120px; height: 120px; border-radius: 8px;"></div>', 
                 unsafe_allow_html=True
             )
         elif os.path.exists("logo.png"):
             col1, col2, col3 = st.columns([1, 2, 1])
             with col2:
-                st.image("logo.png", width=130)
+                st.image("logo.png", width=180)
         elif os.path.exists("logo.jpg"):
             col1, col2, col3 = st.columns([1, 2, 1])
             with col2:
-                st.image("logo.jpg", width=130)
+                st.image("logo.jpg", width=180)
         else:
-            st.markdown("<p style='text-align:center; color:#9ca3af; font-size:0.9em;'>(Please add logo.svg, logo.png or logo.jpg)</p>", unsafe_allow_html=True)
+            st.markdown(f"<p style='text-align:center; color:#9ca3af; font-size:0.9em;'>{t('logo_missing')}</p>", unsafe_allow_html=True)
     except Exception as e:
-        st.warning(f"⚠️ Logo error: {e}")
+        st.warning(t("logo_error", error=e))
+
+    st.selectbox(
+        t("language"),
+        options=["tr", "en"],
+        format_func=lambda x: "Türkçe" if x == "tr" else "English",
+        index=0 if st.session_state.language == "tr" else 1,
+        help=t("language_help"),
+        key="language_selector",
+        on_change=lambda: None,
+    )
+    st.session_state.language = st.session_state.language_selector
 
     st.markdown("<h2 class='aybu-header'>SmartAttend</h2>", unsafe_allow_html=True)
-    st.markdown("<div class='aybu-subheader'>Autonomous Attendance</div>", unsafe_allow_html=True)
+    st.markdown(f"<div class='aybu-subheader'>{t('app_subtitle')}</div>", unsafe_allow_html=True)
 
-    st.subheader("⚙️ Session Control")
+    st.subheader(t("session_control"))
     col1, col2 = st.columns(2)
     with col1:
-        if st.button("🟢 Start", disabled=st.session_state.session_active):
+        if st.button(t("start"), disabled=st.session_state.session_active):
             st.session_state.session_active = True
             st.session_state.manager.start_attendance_session()
+            # reset unknown flag for a fresh session
+            st.session_state.session_unknown_detected = False
+            st.session_state.toast_dismissed = False
             st.rerun()
     with col2:
-        if st.button("🛑 Stop", disabled=not st.session_state.session_active):
+        if st.button(t("stop"), disabled=not st.session_state.session_active):
             st.session_state.session_active = False
             st.session_state.manager.save_list()
-            st.success("💾 Saved!")
+            st.success(t("saved"))
             time.sleep(1)
             st.rerun()
     
-    # Kamera Ayarları Expander
-    with st.expander("📷 Kamera Ayarları"):
+    with st.expander(t("camera_settings")):
         st.session_state.camera_index = st.number_input(
-            "Camera device index",
+            t("camera_index"),
             min_value=0,
             max_value=10,
             value=int(st.session_state.camera_index),
             step=1,
-            help="Use your phone camera here if it appears as an external webcam on macOS. Common values are 1 or 2.",
+            help=t("camera_help"),
         )
-        st.caption(
-            "If your phone is not listed as a webcam, use a companion app like Camo or DroidCam so macOS exposes it as a camera device."
-        )
+        st.caption(t("camera_caption"))
 
-    # Canlı İstatistikler Expander
-    with st.expander("📊 Canlı İstatistikler"):
+    with st.expander(t("live_stats")):
         total_val = st.session_state.total_students
         present_val = st.session_state.present_count
         absent_val = max(0, total_val - present_val)
@@ -257,14 +441,14 @@ with st.sidebar:
         m_col2.metric(label="✅ Present", value=present_val)
         m_col3.metric(label="❌ Absent", value=absent_val)
 
-    # Veri Dışa Aktarma Expander
-    with st.expander("⬇️ Veri Dışa Aktarma"):
+
+    with st.expander(t("export_data")):
         excel_buffer = io.BytesIO()
         st.session_state.manager.students_df.to_excel(excel_buffer, index=False)
         excel_data = excel_buffer.getvalue()
 
         st.download_button(
-            label="📑 Download Excel Report",
+            label=t("download_excel"),
             data=excel_data,
             file_name=f"Attendance_Report_{datetime.now().strftime('%Y%m%d_%H%M')}.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -272,12 +456,10 @@ with st.sidebar:
         )
 
 
-# --- 4. MAIN LAYOUT ---
-tab1, tab2 = st.tabs(["🎥 Live Attendance Dashboard", "➕ Add New Student"])
+tab1, tab2 = st.tabs([t("tab_dashboard"), t("tab_student")])
 
-# ==== TAB 1: LIVE DASHBOARD ====
 with tab1:
-    # Metrics Row
+
     with st.container(border=True):
         col1, col2, col3, col4 = st.columns(4)
         
@@ -295,12 +477,11 @@ with tab1:
             attendance_rate = (present_count / max(1, total_students) * 100)
             st.metric("📈 Rate", f"{attendance_rate:.0f}%")
     
-    # Charts & Table Row
     chart_col, table_col = st.columns(2)
     
     with chart_col:
         with st.container(border=True):
-            st.subheader("📊 Attendance Ratio")
+            st.subheader(t("attendance_ratio"))
             
             if total_students > 0:
                 chart_data = pd.DataFrame({
@@ -330,130 +511,161 @@ with tab1:
     
     with table_col:
         with st.container(border=True):
-            st.subheader("👥 Present Students")
+            st.subheader(t("present_students"))
             data_placeholder = st.empty()
             data_placeholder.dataframe(st.session_state.live_list, use_container_width=True, hide_index=True)
     
-    # Tracking System Row (Full Width)
     with st.container(border=True):
-        st.subheader("🎥 Autonomous Tracking System")
+        st.subheader(t("tracking_system"))
         
         status_placeholder = st.empty()
         if st.session_state.session_active:
-            status_placeholder.markdown("<div class='status-text'>🟢 Status: Session Active, Waiting for Faces...</div>", unsafe_allow_html=True)
+            status_placeholder.markdown(f"<div class='status-text'>{t('session_active')}</div>", unsafe_allow_html=True)
         else:
-            status_placeholder.markdown("<div class='status-text'>⚪ Status: Session Closed. Click 'Start' in the sidebar.</div>", unsafe_allow_html=True)
+            status_placeholder.markdown(f"<div class='status-text'>{t('session_closed')}</div>", unsafe_allow_html=True)
 
         src_col1, src_col2 = st.columns(2)
         with src_col1:
-            use_cam = st.button("📸 Open Camera", use_container_width=True)
+            use_cam = st.button(t("open_camera"), use_container_width=True)
         with src_col2:
-            st.session_state.stop_video = st.button("⏹️ Stop Stream", use_container_width=True)
+            st.session_state.stop_video = st.button(t("stop_stream"), use_container_width=True)
             
-        uploaded_video = st.file_uploader("🎬 Upload Video File for Processing", type=["mp4", "avi", "mov", "mkv"])
-        use_uploaded_vid = st.button("▶️ Process Uploaded Video") if uploaded_video else False
+        uploaded_video = st.file_uploader(t("upload_video"), type=["mp4", "avi", "mov", "mkv"])
+        use_uploaded_vid = st.button(t("process_video")) if uploaded_video else False
 
         alert_placeholder = st.empty()
         video_placeholder = st.empty()
         
         if use_cam or use_uploaded_vid:
+            if use_cam and not st.session_state.session_active:
+                st.session_state.session_active = True
+                st.session_state.manager.start_attendance_session()
+                st.session_state.session_unknown_detected = False
+                st.session_state.toast_dismissed = False
+
             if not st.session_state.session_active:
-                st.warning("⚠️ Please 'Start' the attendance session from the sidebar first!")
+                st.warning(t("start_warning"))
             else:
                 source = int(st.session_state.camera_index)
                 if use_uploaded_vid:
                     import tempfile
-                    # Save uploaded video to a temporary file since cv2.VideoCapture requires a path
                     tfile = tempfile.NamedTemporaryFile(delete=False, suffix=".mp4")
                     tfile.write(uploaded_video.read())
                     source = tfile.name
 
-                cap = cv2.VideoCapture(source)
-                status_placeholder.markdown("<div class='status-text'>🔄 Processing... Stream active.</div>", unsafe_allow_html=True)
+                cap = None
+                if use_cam:
+                    camera_candidates = []
+                    for candidate in [source, 0, 1, 2, 3]:
+                        if candidate not in camera_candidates:
+                            camera_candidates.append(candidate)
 
-                frame_count = 0
+                    for candidate in camera_candidates:
+                        test_cap = cv2.VideoCapture(candidate)
+                        if test_cap.isOpened():
+                            cap = test_cap
+                            source = candidate
+                            break
+                        test_cap.release()
+                else:
+                    cap = cv2.VideoCapture(source)
 
-                while cap.isOpened() and not st.session_state.stop_video:
-                    ret, frame = cap.read()
-                    if not ret:
-                        status_placeholder.warning("Video finished or camera inaccessible.")
-                        break
+                if cap is None or not cap.isOpened():
+                    st.error(t("camera_error"))
+                else:
+                    status_placeholder.markdown(f"<div class='status-text'>{t('stream_active')}</div>", unsafe_allow_html=True)
 
-                    frame_count += 1
-                    if frame_count % Config.FRAME_SKIP != 0:
-                        continue
+                    frame_count = 0
 
-                    processed_frame, recognized_ids = st.session_state.analyzer.process_frame(frame)
+                    while cap.isOpened() and not st.session_state.stop_video:
+                        ret, frame = cap.read()
+                        if not ret:
+                            status_placeholder.warning(t("video_finished"))
+                            break
 
-                    has_unknown = False
-                    if "Unknown" in recognized_ids or "Bilinmeyen" in recognized_ids:
-                        has_unknown = True
+                        frame_count += 1
+                        if frame_count % Config.FRAME_SKIP != 0:
+                            continue
 
-                    for person_id in recognized_ids:
-                        if person_id not in ["Unknown", "Bilinmeyen"]:
-                            handle_attendance(person_id)
+                        processed_frame, recognized_ids = st.session_state.analyzer.process_frame(frame)
 
-                    if has_unknown:
-                        alert_placeholder.markdown(
-                            "<div class='alert-box'>⚠️ SECURITY ALERT: Unidentified Person Detected!</div>", 
-                            unsafe_allow_html=True
-                        )
-                    else:
-                        alert_placeholder.empty()
+                        has_unknown = False
+                        if "Unknown" in recognized_ids or "Bilinmeyen" in recognized_ids:
+                            has_unknown = True
+                            st.session_state.session_unknown_detected = True
 
-                    rgb_frame = cv2.cvtColor(processed_frame, cv2.COLOR_BGR2RGB)
-                    video_placeholder.image(rgb_frame, channels="RGB", use_container_width=True)
-                    
-                    # Update Dataframe dynamically alongside the video
-                    data_placeholder.dataframe(st.session_state.live_list, use_container_width=True, hide_index=True)
-                    time.sleep(0.01)
+                        for person_id in recognized_ids:
+                            if person_id not in ["Unknown", "Bilinmeyen"]:
+                                handle_attendance(person_id)
 
-                cap.release()
-                st.session_state.stop_video = False
-                status_placeholder.markdown("<div class='status-text'>⚪ Video stopped.</div>", unsafe_allow_html=True)
+                        if has_unknown:
+                            alert_placeholder.markdown(
+                                f"<div class='alert-box'>{t('security_alert')}</div>",
+                                unsafe_allow_html=True,
+                            )
+                        else:
+                            alert_placeholder.empty()
 
-# ==== TAB 2: ADD NEW STUDENT ====
+                        rgb_frame = cv2.cvtColor(processed_frame, cv2.COLOR_BGR2RGB)
+                        video_placeholder.image(rgb_frame, channels="RGB", use_container_width=True)
+
+                        data_placeholder.dataframe(st.session_state.live_list, use_container_width=True, hide_index=True)
+                        time.sleep(0.01)
+
+                    cap.release()
+                    st.session_state.stop_video = False
+                    status_placeholder.markdown(f"<div class='status-text'>{t('session_closed')}</div>", unsafe_allow_html=True)
+
+                    if st.session_state.session_unknown_detected and not st.session_state.toast_dismissed:
+                        st.write("---")
+                        st.warning(t("session_warning"))
+                        
+                        col1, col2, col3 = st.columns([2, 1, 1])
+                        with col2:
+                            if st.button(t("close"), key="close_toast_btn", use_container_width=True):
+                                st.session_state.toast_dismissed = True
+                                st.rerun()
+
 with tab2:
     with st.container():
-        st.subheader("📝 Student Registration Portal")
-        st.write("Register a new student here. The AI encoding will automatically update and sync the database.")
+        st.subheader(t("student_portal"))
+        st.write(t("student_portal_desc"))
         
         with st.form("add_student_form", clear_on_submit=True):
             col_f, col_l = st.columns(2)
             with col_f:
-                f_name = st.text_input("First Name", placeholder="e.g., Jane")
+                f_name = st.text_input(t("first_name"), placeholder="e.g., Jane")
             with col_l:
-                l_name = st.text_input("Last Name", placeholder="e.g., Doe")
+                l_name = st.text_input(t("last_name"), placeholder="e.g., Doe")
                 
-            s_id = st.text_input("Student ID Number", placeholder="e.g., 20260011")
+            s_id = st.text_input(t("student_id"), placeholder="e.g., 20260011")
             
-            uploaded_img = st.file_uploader("Upload Clear Face Image", type=["jpg", "jpeg", "png"])
+            uploaded_img = st.file_uploader(t("image_upload"), type=["jpg", "jpeg", "png"])
             
-            submit = st.form_submit_button("Save Student & Train AI ✓")
+            submit = st.form_submit_button(t("save_student"))
             
             if submit:
                 if not (f_name and l_name and s_id and uploaded_img):
-                    st.error("⚠️ All fields (First Name, Last Name, Student ID, and Image) are mandatory!")
+                    st.error(t("mandatory_fields"))
                 else:
-                    # Format to matching schema: firstname_lastname_id.jpg
                     s_name = f"{f_name.strip()}_{l_name.strip()}".replace(" ", "_")
                     filename = f"{s_name}_{s_id.strip()}.jpg".lower()
                     filepath = os.path.join(Config.IMAGE_FOLDER, filename)
                     
-                    # Check directory
+
                     os.makedirs(Config.IMAGE_FOLDER, exist_ok=True)
                     
-                    # Save Image
+
                     with open(filepath, "wb") as f:
                         f.write(uploaded_img.read())
-                    st.success(f"📸 Image successfully saved as `{filename}`")
+                    st.success(t("saved_image", filename=filename))
                     
                     # Trigger the Encoding process
-                    with st.spinner("🤖 Training AI with new face data. Please wait..."):
+                    with st.spinner(t("training")):
                         res = subprocess.run([sys.executable, "encoding.py"], capture_output=True, text=True)
                         
                         if res.returncode == 0:
-                            st.success("✅ AI Face Encodings updated successfully!")
+                            st.success(t("encoding_ok"))
                             
                             # Resync Manager & Reload Analyzer into state
                             st.session_state.manager.sync_from_folder()
@@ -465,4 +677,4 @@ with tab2:
                             time.sleep(2)
                             st.rerun()
                         else:
-                            st.error(f"❌ Failed to process AI encoding:\n{res.stderr}")
+                            st.error(t("encoding_fail", stderr=res.stderr))

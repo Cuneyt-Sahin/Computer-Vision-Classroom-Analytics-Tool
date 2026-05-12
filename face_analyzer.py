@@ -66,22 +66,28 @@ class FaceAnalyzer:
                     best_match = name
 
             # Visualization Decisions
-            if max_similarity > self.threshold:
-                # If filename is formatted as Name_Surname_SchoolNo, format it neatly
-                parts = best_match.split("_")
-                if len(parts) >= 2:
-                    display_name = f"{parts[0]} {parts[1]}"  # Just Name and Surname
-                    recognized_ids.append(parts[-1])  # Add number to the list (For attendance)
-                else:
-                    display_name = best_match
-                    recognized_ids.append(best_match)
+                # 1) If confidence is above the match threshold -> recognized
+                # 2) If confidence is below UNKNOWN_THRESHOLD_PERCENTAGE -> explicitly Unknown
+                # 3) If confidence is between those two -> Uncertain 
+                if max_similarity > self.threshold:
+                    parts = best_match.split("_")
+                    if len(parts) >= 2:
+                        display_name = f"{parts[0]} {parts[1]}"
+                        recognized_ids.append(parts[-1])  # Add number for attendance
+                    else:
+                        display_name = best_match
+                        recognized_ids.append(best_match)
 
-                display_text = f"{display_name} ({max_similarity:.1f}%)"
-                color = (0, 255, 0) 
-            else:
-                display_text = f"Unknown ({max_similarity:.1f}%)"
-                color = (0, 0, 255) 
-                recognized_ids.append("Unknown")
+                    display_text = f"{display_name} ({max_similarity:.1f}%)"
+                    color = (0, 255, 0)  # Green
+                elif max_similarity < Config.UNKNOWN_THRESHOLD_PERCENTAGE:
+                    display_text = f"Unknown ({max_similarity:.1f}%)"
+                    color = (0, 0, 255)  # Red
+                    recognized_ids.append("Unknown")
+                else:
+                    # Mid-range matches — show as uncertain but do not add to recognized list
+                    display_text = f"Uncertain ({max_similarity:.1f}%)"
+                    color = (0, 165, 255)  # Orange
 
             # Draw on Screen
             bbox = face.bbox.astype(int)
