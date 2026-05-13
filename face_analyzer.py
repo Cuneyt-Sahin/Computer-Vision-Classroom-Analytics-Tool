@@ -3,6 +3,19 @@ import numpy as np
 from insightface.app import FaceAnalysis
 from config import Config
 
+def sanitize_text_for_cv2(text):
+    """Replaces Turkish characters with ASCII equivalents for OpenCV putText."""
+    replacements = {
+        'ç': 'c', 'Ç': 'C',
+        'ğ': 'g', 'Ğ': 'G',
+        'ı': 'i', 'İ': 'I',
+        'ö': 'o', 'Ö': 'O',
+        'ş': 's', 'Ş': 'S',
+        'ü': 'u', 'Ü': 'U'
+    }
+    for tr_char, eng_char in replacements.items():
+        text = text.replace(tr_char, eng_char)
+    return text
 
 class FaceAnalyzer:
     def __init__(
@@ -92,9 +105,12 @@ class FaceAnalyzer:
             # Draw on Screen
             bbox = face.bbox.astype(int)
             cv2.rectangle(frame, (bbox[0], bbox[1]), (bbox[2], bbox[3]), color, 2)
+            
+            clean_display_text = sanitize_text_for_cv2(display_text)
+            
             cv2.putText(
                 frame,
-                display_text,
+                clean_display_text,
                 (bbox[0], bbox[1] - 10),
                 cv2.FONT_HERSHEY_SIMPLEX,
                 0.6,
@@ -103,50 +119,3 @@ class FaceAnalyzer:
             )
 
         return frame, recognized_ids
-
-    def run_video_test(self, video_path=Config.VIDEO_SOURCE):
-        """
-        Used to test the system in an OpenCV window.
-        In the real application, this loop runs inside Streamlit.
-        """
-        try:
-            source = int(video_path)
-        except ValueError:
-            source = video_path
-            
-        cap = cv2.VideoCapture(source)
-        print("\n▶️ Analysis starting... Press 'q' to exit.")
-
-        frame_count = 0
-        while cap.isOpened():
-            ret, frame = cap.read()
-            if not ret:
-                break
-
-            frame_count += 1
-
-            # FPS Optimization: Process every N frames
-            if frame_count % Config.FRAME_SKIP != 0:
-                continue
-
-            # Send frame to Class and get processed version
-            processed_frame, recognized_persons = self.process_frame(frame)
-
-            # Print to terminal for Debug
-            if recognized_persons:
-                print(f"Frame {frame_count}: Detected IDs: {recognized_persons}")
-
-            cv2.imshow("SmartAttend - Face Recognition", processed_frame)
-
-            if cv2.waitKey(1) & 0xFF == ord("q"):
-                break
-
-        cap.release()
-        cv2.destroyAllWindows()
-
-
-if __name__ == "__main__":
-    analyzer = FaceAnalyzer()
-
-    # Test with your own video or '0' for camera 
-    analyzer.run_video_test("a.mp4")

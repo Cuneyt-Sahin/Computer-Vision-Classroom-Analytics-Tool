@@ -89,6 +89,14 @@ class StudentManager:
             return True
         return False
 
+    def reset_attendance(self):
+        """Removes all attendance session columns and keeps only students' base information."""
+        cols_to_keep = ["School No", "Full Name"]
+        existing_cols = [col for col in cols_to_keep if col in self.students_df.columns]
+        self.students_df = self.students_df[existing_cols]
+        self.current_session_col = None
+        self.save_list()
+
     def save_list(self):
         """Saves the student list to Excel."""
         self.students_df.to_excel(self.excel_path, index=False)

@@ -12,114 +12,13 @@ import plotly.express as px
 from config import Config
 from face_analyzer import FaceAnalyzer
 from student_manager import StudentManager
-
-
-UI_TEXT = {
-    "tr": {
-        "app_title": "AYBÜ SmartAttend | Otomatik Yoklama",
-        "app_subtitle": "Otonom Yoklama",
-        "language": "Dil",
-        "language_help": "Arayüz dilini seçin.",
-        "session_control": "⚙️ Oturum Kontrolü",
-        "start": "🟢 Başlat",
-        "stop": "🛑 Durdur",
-        "camera_settings": "📷 Kamera Ayarları",
-        "camera_index": "Kamera cihaz numarası",
-        "camera_help": "Telefon kameranız macOS'ta harici kamera olarak görünüyorsa buradan seçebilirsiniz. Yaygın değerler 1 veya 2'dir.",
-        "camera_caption": "Telefonunuz kamera olarak görünmüyorsa Camo veya DroidCam gibi bir uygulama kullanın.",
-        "live_stats": "📊 Canlı İstatistikler",
-        "export_data": "⬇️ Veri Dışa Aktarma",
-        "download_excel": "📑 Excel Raporunu İndir",
-        "tab_dashboard": "🎥 Canlı Yoklama Paneli",
-        "tab_student": "➕ Yeni Öğrenci Ekle",
-        "attendance_ratio": "📊 Yoklama Oranı",
-        "present_students": "👥 Gelen Öğrenciler",
-        "tracking_system": "🎥 Otonom Takip Sistemi",
-        "session_active": "🟢 Durum: Oturum aktif, yüzler bekleniyor...",
-        "session_closed": "⚪ Durum: Oturum kapalı. Soldaki 'Başlat' düğmesine basın.",
-        "open_camera": "📸 Kamerayı Aç",
-        "stop_stream": "⏹️ Akışı Durdur",
-        "upload_video": "🎬 İşlenecek Video Dosyası Yükle",
-        "process_video": "▶️ Yüklenen Videoyu İşle",
-        "start_warning": "⚠️ Lütfen önce soldan yoklama oturumunu 'Başlat' düğmesiyle açın!",
-        "camera_error": "⚠️ Kamera açılamadı. Kenar çubuğundaki kamera numarasını değiştirin (0, 1, 2, ...).",
-        "stream_active": "🔄 İşleniyor... Akış aktif.",
-        "video_finished": "Video bitti ya da kameraya erişilemiyor.",
-        "security_alert": "⚠️ GÜVENLİK UYARISI: Tanımlanamayan kişi tespit edildi!",
-        "session_warning": "⚠️ **Uyarı**: Bu oturumda tanımlanamayan kişiler tespit edildi ve hâlâ sınıfta olabilir. Lütfen yoklama listesini kontrol edin.",
-        "close": "Kapat",
-        "student_portal": "📝 Öğrenci Kayıt Paneli",
-        "student_portal_desc": "Yeni bir öğrenci burada kaydedilir. Yapay zekâ kodlaması veritabanını otomatik günceller.",
-        "first_name": "Ad",
-        "last_name": "Soyad",
-        "student_id": "Öğrenci No",
-        "image_upload": "Net Yüz Fotoğrafı Yükleyin",
-        "save_student": "Öğrenciyi Kaydet ve AI'yi Eğit ✓",
-        "mandatory_fields": "⚠️ Tüm alanlar (Ad, Soyad, Öğrenci No ve Fotoğraf) zorunludur!",
-        "saved_image": "📸 Görüntü başarıyla `{filename}` olarak kaydedildi",
-        "training": "🤖 Yeni yüz verisiyle AI eğitiliyor. Lütfen bekleyin...",
-        "encoding_ok": "✅ AI yüz kodlamaları başarıyla güncellendi!",
-        "encoding_fail": "❌ AI kodlama işlemi başarısız oldu:\n{stderr}",
-        "logo_error": "⚠️ Logo hatası: {error}",
-        "logo_missing": "(Lütfen logo.svg, logo.png veya logo.jpg ekleyin)",
-        "saved": "💾 Kaydedildi!",
-    },
-    "en": {
-        "app_title": "AYBÜ SmartAttend | Auto Attendance",
-        "app_subtitle": "Autonomous Attendance",
-        "language": "Language",
-        "language_help": "Choose the interface language.",
-        "session_control": "⚙️ Session Control",
-        "start": "🟢 Start",
-        "stop": "🛑 Stop",
-        "camera_settings": "📷 Camera Settings",
-        "camera_index": "Camera device index",
-        "camera_help": "Use your phone camera here if it appears as an external webcam on macOS. Common values are 1 or 2.",
-        "camera_caption": "If your phone is not listed as a webcam, use a companion app like Camo or DroidCam.",
-        "live_stats": "📊 Live Statistics",
-        "export_data": "⬇️ Data Export",
-        "download_excel": "📑 Download Excel Report",
-        "tab_dashboard": "🎥 Live Attendance Dashboard",
-        "tab_student": "➕ Add New Student",
-        "attendance_ratio": "📊 Attendance Ratio",
-        "present_students": "👥 Present Students",
-        "tracking_system": "🎥 Autonomous Tracking System",
-        "session_active": "🟢 Status: Session Active, Waiting for Faces...",
-        "session_closed": "⚪ Status: Session Closed. Click 'Start' in the sidebar.",
-        "open_camera": "📸 Open Camera",
-        "stop_stream": "⏹️ Stop Stream",
-        "upload_video": "🎬 Upload Video File for Processing",
-        "process_video": "▶️ Process Uploaded Video",
-        "start_warning": "⚠️ Please 'Start' the attendance session from the sidebar first!",
-        "camera_error": "⚠️ Camera could not be opened. Try a different camera index in the sidebar (0, 1, 2, ...).",
-        "stream_active": "🔄 Processing... Stream active.",
-        "video_finished": "Video finished or camera inaccessible.",
-        "security_alert": "⚠️ SECURITY ALERT: Unidentified Person Detected!",
-        "session_warning": "⚠️ **Warning**: Unrecognized persons were detected during this session and may still be present in the classroom. Please review the attendance log.",
-        "close": "Close",
-        "student_portal": "📝 Student Registration Portal",
-        "student_portal_desc": "Register a new student here. The AI encoding will automatically update and sync the database.",
-        "first_name": "First Name",
-        "last_name": "Last Name",
-        "student_id": "Student ID Number",
-        "image_upload": "Upload Clear Face Image",
-        "save_student": "Save Student & Train AI ✓",
-        "mandatory_fields": "⚠️ All fields (First Name, Last Name, Student ID, and Image) are mandatory!",
-        "saved_image": "📸 Image successfully saved as `{filename}`",
-        "training": "🤖 Training AI with new face data. Please wait...",
-        "encoding_ok": "✅ AI Face Encodings updated successfully!",
-        "encoding_fail": "❌ Failed to process AI encoding:\n{stderr}",
-        "logo_error": "⚠️ Logo error: {error}",
-        "logo_missing": "(Please add logo.svg, logo.png or logo.jpg)",
-        "saved": "💾 Saved!",
-    },
-}
+from attendance_list import AttendanceList
+from ui_manager import UIManager
 
 
 def t(key: str, **kwargs) -> str:
     lang = st.session_state.get("language", "tr")
-    text = UI_TEXT.get(lang, UI_TEXT["en"]).get(key, key)
-    return text.format(**kwargs)
+    return UIManager.t(lang, key, **kwargs)
 
 
 st.set_page_config(
@@ -129,192 +28,7 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-st.markdown("""
-    <style>
-    /* Ana arkaplanı çok hafif gri yap ki beyaz kartlar öne çıksın */
-    .stApp {
-        background-color: #fcfcfc !important;
-    }
-    
-    body, .stMainBlockContainer {
-        background-color: #fcfcfc !important;
-    }
-
-    /* border=True olan tüm container'ları yakala ve gölge ekle */
-    div[data-testid="stVerticalBlockBorderWrapper"] {
-        background-color: white !important;
-        border: 1px solid #eee !important;
-        border-radius: 12px !important;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.05) !important;
-        padding: 15px !important;
-    }
-    
-    /* Metrics Styling */
-    [data-testid="metric-container"] {
-        background: #ffffff !important;
-        border-radius: 8px;
-        border: 1px solid #eee !important;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.03) !important;
-        padding: 12px !important;
-    }
-    
-    /* Button Styling */
-    .stButton>button {
-        background: #3b82f6 !important;
-        color: #ffffff !important;
-        border-radius: 8px;
-        border: none;
-        font-weight: 600;
-        padding: 8px 16px !important;
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 6px rgba(59, 130, 246, 0.15);
-    }
-    
-    .stButton>button:hover {
-        background: #2563eb !important;
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-        transform: translateY(-1px);
-    }
-    
-    /* Text Colors */
-    body, .stMarkdown, .stApp {
-        color: #1f2937 !important;
-    }
-    
-    .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
-        color: #1f2937 !important;
-        font-weight: 700 !important;
-    }
-    
-    .stSubheader {
-        color: #1f2937 !important;
-        font-weight: 700 !important;
-    }
-    
-    /* Messages */
-    .stSuccess {
-        background: #f0fdf4 !important;
-        border-left: 3px solid #22c55e !important;
-        border-radius: 8px !important;
-        border: none !important;
-        box-shadow: 0 2px 6px rgba(34, 197, 94, 0.08);
-    }
-    
-    .stError {
-        background: #fef2f2 !important;
-        border-left: 3px solid #ef4444 !important;
-        border-radius: 8px !important;
-        border: none !important;
-        box-shadow: 0 2px 6px rgba(239, 68, 68, 0.08);
-    }
-    
-    .stWarning {
-        background: #eff6ff !important;
-        border-left: 3px solid #3b82f6 !important;
-        border-radius: 8px !important;
-        border: none !important;
-        box-shadow: 0 2px 6px rgba(59, 130, 246, 0.08);
-    }
-    
-    /* Hide Tab Border */
-    .stTabs {
-        border: none !important;
-    }
-    
-    /* Hide Dividers */
-    hr {
-        border: none !important;
-        height: 0 !important;
-        margin: 0 !important;
-    }
-    
-    /* Font */
-    html, body, .stApp {
-        font-family: 'Inter', 'Segoe UI', 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif !important;
-    }
-    
-    /* SmartAttend Header Styling */
-    .aybu-header {
-        text-align: center !important;
-        color: #3b82f6 !important;
-        font-weight: 700 !important;
-        margin: 0 !important;
-    }
-    
-    .aybu-subheader {
-        text-align: center !important;
-        color: #9ca3af !important;
-        font-weight: 500 !important;
-        font-size: 0.95rem !important;
-        margin-bottom: 12px !important;
-    }
-    /* Toast notification (bottom-right, closable) */
-    .toast-notification {
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        background: #b91c1c;
-        color: #ffffff;
-        padding: 20px 24px;
-        padding-right: 45px;
-        border-radius: 10px;
-        box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-        z-index: 10000;
-        max-width: 400px;
-        font-size: 14px;
-        line-height: 1.5;
-        animation: slideIn 0.4s ease-out;
-    }
-    .toast-notification h3 {
-        margin: 0 0 8px 0;
-        font-size: 16px;
-        font-weight: 700;
-    }
-    .toast-notification p {
-        margin: 0;
-        font-size: 13px;
-    }
-    .toast-close {
-        position: absolute;
-        top: 12px;
-        right: 12px;
-        background: none;
-        border: none;
-        color: #ffffff;
-        font-size: 24px;
-        cursor: pointer;
-        padding: 0;
-        width: 24px;
-        height: 24px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        opacity: 0.8;
-        transition: opacity 0.2s;
-    }
-    .toast-close:hover {
-        opacity: 1;
-    }
-    @keyframes slideIn {
-        from {
-            transform: translateX(400px);
-            opacity: 0;
-        }
-        to {
-            transform: translateX(0);
-            opacity: 1;
-        }
-    }
-    @keyframes fadeOut {
-        from {
-            opacity: 1;
-        }
-        to {
-            opacity: 0;
-        }
-    }
-    }
-    """, unsafe_allow_html=True)
+UIManager.apply_theme()
 
 
 if "initialized" not in st.session_state:
@@ -322,15 +36,14 @@ if "initialized" not in st.session_state:
         st.session_state.manager = StudentManager()
         st.session_state.manager.sync_from_folder()
         st.session_state.analyzer = FaceAnalyzer()
+        st.session_state.attendance_list = AttendanceList(st.session_state.manager)
         
-        st.session_state.hit_counts = {}
         st.session_state.session_active = False
-        st.session_state.live_list = pd.DataFrame(columns=["School No", "Full Name", "Entry Time", "Status"])
-        st.session_state.present_count = 0
         st.session_state.total_students = len(st.session_state.manager.students_df)
         st.session_state.camera_index = 1
-        st.session_state.session_unknown_detected = False
         st.session_state.toast_dismissed = False
+        st.session_state.session_unknown_detected = False
+        st.session_state.unknown_hits = 0
         st.session_state.language = "en"
         st.session_state.initialized = True
         st.session_state.stop_video = False
@@ -339,30 +52,13 @@ def handle_attendance(student_id):
     """Processes a recognized student ID."""
     if not st.session_state.session_active:
         return
+    st.session_state.attendance_list.handle_attendance(student_id)
 
-    # Hit Counter Logic
-    if student_id not in st.session_state.hit_counts:
-        st.session_state.hit_counts[student_id] = 0
-    st.session_state.hit_counts[student_id] += 1
-
-    # Threshold Check
-    if st.session_state.hit_counts[student_id] == Config.REQUIRED_VOTING_HITS:
-        success = st.session_state.manager.update_attendance(student_id)
-        if success:
-            st.session_state.present_count += 1
-            
-            student_row = st.session_state.manager.students_df[st.session_state.manager.students_df["School No"] == student_id].iloc[0]
-            full_name = student_row["Full Name"]
-            time_str = datetime.now().strftime("%H:%M:%S")
-
-            new_record = pd.DataFrame([{
-                "School No": student_id,
-                "Full Name": full_name,
-                "Entry Time": time_str,
-                "Status": "✅ Present"
-            }])
-            st.session_state.live_list = pd.concat([new_record, st.session_state.live_list], ignore_index=True)
-
+@st.dialog("📋 Yoklama Listesi / Attendance List", width="large")
+def show_attendance_list_popup():
+    st.dataframe(st.session_state.manager.students_df, use_container_width=True, hide_index=True)
+    if st.button("Kapat / Close", use_container_width=True):
+        st.rerun()
 
 with st.sidebar:
     try:
@@ -399,17 +95,17 @@ with st.sidebar:
     )
     st.session_state.language = st.session_state.language_selector
 
-    st.markdown("<h2 class='aybu-header'>SmartAttend</h2>", unsafe_allow_html=True)
-    st.markdown(f"<div class='aybu-subheader'>{t('app_subtitle')}</div>", unsafe_allow_html=True)
-
-    st.subheader(t("session_control"))
+    st.markdown("---")
+    st.markdown(f"<div class='aybu-subheader'>{t('session_control')}</div>", unsafe_allow_html=True)
     col1, col2 = st.columns(2)
     with col1:
         if st.button(t("start"), disabled=st.session_state.session_active):
             st.session_state.session_active = True
+            st.session_state.attendance_list.reset_session()
             st.session_state.manager.start_attendance_session()
-            # reset unknown flag for a fresh session
+            # Her yeni video/kamera baslatildiginda uyarilari sifirla
             st.session_state.session_unknown_detected = False
+            st.session_state.unknown_hits = 0
             st.session_state.toast_dismissed = False
             st.rerun()
     with col2:
@@ -433,7 +129,7 @@ with st.sidebar:
 
     with st.expander(t("live_stats")):
         total_val = st.session_state.total_students
-        present_val = st.session_state.present_count
+        present_val = st.session_state.attendance_list.present_count
         absent_val = max(0, total_val - present_val)
         
         m_col1, m_col2, m_col3 = st.columns(3)
@@ -455,6 +151,35 @@ with st.sidebar:
             disabled=st.session_state.manager.students_df.empty
         )
 
+    st.markdown("---")
+    st.markdown(f"<div class='aybu-subheader'>📝 {t('live_stats')} Management</div>", unsafe_allow_html=True)
+    
+    if st.button(t("view_list"), use_container_width=True):
+        show_attendance_list_popup()
+    
+    if st.button(t("reset_all"), use_container_width=True):
+        st.session_state.attendance_list.reset_all()
+        st.success("Tüm veriler sıfırlandı." if st.session_state.language == "tr" else "All data reset.")
+        time.sleep(1)
+        st.rerun()
+        
+    del_id = st.text_input(t("delete_record"), placeholder="örn. 20260011")
+    if st.button("➖ {0}".format("Tamamen Sil" if st.session_state.language == "tr" else "Delete Completely"), use_container_width=True):
+        if del_id:
+            res = st.session_state.attendance_list.delete_record(del_id.strip())
+            if res:
+                st.session_state.total_students = len(st.session_state.manager.students_df)
+                
+                with st.spinner("Yüz veritabanı temizleniyor... (AI Syncing)" if st.session_state.language == "tr" else "Cleaning face database... (AI Syncing)"):
+                    subprocess.run([sys.executable, "encoding.py"], capture_output=True, text=True)
+                    st.session_state.analyzer = FaceAnalyzer()
+                
+                st.success(f"{del_id} numaralı öğrenci tüm sistemden (Fotoğraf, Excel, AI Veritabanı) tamamen silindi." if st.session_state.language == "tr" else f"Student {del_id} permanently deleted from the entire system (Photo, Excel, AI DB).")
+                time.sleep(2)
+            else:
+                st.error("Kayıtlı öğrenci bulunamadı." if st.session_state.language == "tr" else "Registered student not found.")
+            st.rerun()
+
 
 tab1, tab2 = st.tabs([t("tab_dashboard"), t("tab_student")])
 
@@ -463,57 +188,64 @@ with tab1:
     with st.container(border=True):
         col1, col2, col3, col4 = st.columns(4)
         
-        total_students = st.session_state.total_students
-        present_count = st.session_state.present_count
-        absent_count = max(0, total_students - present_count)
+        metric_total = col1.empty()
+        metric_present = col2.empty()
+        metric_absent = col3.empty()
+        metric_rate = col4.empty()
         
-        with col1:
-            st.metric("📊 Total", total_students)
-        with col2:
-            st.metric("✅ Present", present_count)
-        with col3:
-            st.metric("❌ Absent", absent_count)
-        with col4:
-            attendance_rate = (present_count / max(1, total_students) * 100)
-            st.metric("📈 Rate", f"{attendance_rate:.0f}%")
-    
     chart_col, table_col = st.columns(2)
     
     with chart_col:
         with st.container(border=True):
             st.subheader(t("attendance_ratio"))
+            chart_placeholder = st.empty()
             
-            if total_students > 0:
-                chart_data = pd.DataFrame({
-                    'Status': ['Present', 'Absent'],
-                    'Count': [present_count, absent_count]
-                })
-                
-                fig = go.Figure(data=[go.Pie(
-                    labels=chart_data['Status'],
-                    values=chart_data['Count'],
-                    hole=0.4,
-                    marker=dict(colors=['#10b981', '#f87171']),
-                    textinfo='label+percent',
-                    hoverinfo='label+value+percent'
-                )])
-                
-                fig.update_layout(
-                    font=dict(size=10, color='#1f2937'),
-                    paper_bgcolor='#ffffff',
-                    plot_bgcolor='#ffffff',
-                    margin=dict(l=0, r=0, t=0, b=0),
-                    height=200,
-                    showlegend=False
-                )
-                
-                st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
-    
     with table_col:
         with st.container(border=True):
             st.subheader(t("present_students"))
             data_placeholder = st.empty()
-            data_placeholder.dataframe(st.session_state.live_list, use_container_width=True, hide_index=True)
+
+    def update_dashboard_ui():
+        total_students = st.session_state.total_students
+        present_count = st.session_state.attendance_list.present_count
+        absent_count = max(0, total_students - present_count)
+        attendance_rate = (present_count / max(1, total_students) * 100)
+        
+        metric_total.metric("📊 Total", total_students)
+        metric_present.metric("✅ Present", present_count)
+        metric_absent.metric("❌ Absent", absent_count)
+        metric_rate.metric("📈 Rate", f"{attendance_rate:.0f}%")
+        
+        if total_students > 0:
+            chart_data = pd.DataFrame({
+                'Status': ['Present', 'Absent'],
+                'Count': [present_count, absent_count]
+            })
+            
+            fig = go.Figure(data=[go.Pie(
+                labels=chart_data['Status'],
+                values=chart_data['Count'],
+                hole=0.4,
+                marker=dict(colors=['#10b981', '#f87171']),
+                textinfo='label+percent',
+                hoverinfo='label+value+percent'
+            )])
+            
+            fig.update_layout(
+                font=dict(size=10, color='#1f2937'),
+                paper_bgcolor='#ffffff',
+                plot_bgcolor='#ffffff',
+                margin=dict(l=0, r=0, t=0, b=0),
+                height=200,
+                showlegend=False
+            )
+            
+            chart_placeholder.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False}, key=f"pie_{time.time()}")
+        
+        data_placeholder.dataframe(st.session_state.attendance_list.get_live_list(), use_container_width=True, hide_index=True)
+
+    # Initial render
+    update_dashboard_ui()
     
     with st.container(border=True):
         st.subheader(t("tracking_system"))
@@ -537,11 +269,14 @@ with tab1:
         video_placeholder = st.empty()
         
         if use_cam or use_uploaded_vid:
-            if use_cam and not st.session_state.session_active:
+            if not st.session_state.session_active:
                 st.session_state.session_active = True
                 st.session_state.manager.start_attendance_session()
-                st.session_state.session_unknown_detected = False
-                st.session_state.toast_dismissed = False
+            
+            # Her yeni video/kamera baslatildiginda uyarilari sifirla
+            st.session_state.session_unknown_detected = False
+            st.session_state.unknown_hits = 0
+            st.session_state.toast_dismissed = False
 
             if not st.session_state.session_active:
                 st.warning(t("start_warning"))
@@ -589,16 +324,27 @@ with tab1:
 
                         processed_frame, recognized_ids = st.session_state.analyzer.process_frame(frame)
 
-                        has_unknown = False
+                        has_unknown_in_frame = False
                         if "Unknown" in recognized_ids or "Bilinmeyen" in recognized_ids:
-                            has_unknown = True
-                            st.session_state.session_unknown_detected = True
+                            has_unknown_in_frame = True
+                            st.session_state.unknown_hits += 1
+                            if st.session_state.unknown_hits >= 15:
+                                st.session_state.session_unknown_detected = True
+                        else:
+                            # Also reset if there's no unknown in the frame to prevent random jumps 
+                            # accumulating over a long time triggering it
+                            st.session_state.unknown_hits = 0
 
+                        has_new_update = False
                         for person_id in recognized_ids:
                             if person_id not in ["Unknown", "Bilinmeyen"]:
-                                handle_attendance(person_id)
+                                # Attempt attendance update
+                                success = st.session_state.attendance_list.handle_attendance(person_id)
+                                if success:
+                                    has_new_update = True
 
-                        if has_unknown:
+                        # Sadece belirli bir miktar ust uste bilinmeyen gorduyse anlik kirmizi uyariyi ver
+                        if st.session_state.unknown_hits >= 8:
                             alert_placeholder.markdown(
                                 f"<div class='alert-box'>{t('security_alert')}</div>",
                                 unsafe_allow_html=True,
@@ -609,7 +355,9 @@ with tab1:
                         rgb_frame = cv2.cvtColor(processed_frame, cv2.COLOR_BGR2RGB)
                         video_placeholder.image(rgb_frame, channels="RGB", use_container_width=True)
 
-                        data_placeholder.dataframe(st.session_state.live_list, use_container_width=True, hide_index=True)
+                        # Update UI stats and tables live ONLY when a new student is marked present
+                        if has_new_update:
+                            update_dashboard_ui()
                         time.sleep(0.01)
 
                     cap.release()
