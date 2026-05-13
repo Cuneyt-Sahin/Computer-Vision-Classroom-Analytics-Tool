@@ -34,7 +34,7 @@ class VideoTester:
             # Send frame to Class and get processed version
             processed_frame, recognized_persons = self.analyzer.process_frame(frame)
 
-            # Print to terminal for Debug
+          
             if recognized_persons:
                 print(f"Frame {frame_count}: Detected IDs: {recognized_persons}")
 
@@ -51,5 +51,5 @@ if __name__ == "__main__":
     analyzer = FaceAnalyzer()
     tester = VideoTester(analyzer)
 
-    # Test with your own video or '0' for camera 
+   
     tester.run_video_test("a.mp4")

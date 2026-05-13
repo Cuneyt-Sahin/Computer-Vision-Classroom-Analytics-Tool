@@ -103,7 +103,6 @@ with st.sidebar:
             st.session_state.session_active = True
             st.session_state.attendance_list.reset_session()
             st.session_state.manager.start_attendance_session()
-            # Her yeni video/kamera baslatildiginda uyarilari sifirla
             st.session_state.session_unknown_detected = False
             st.session_state.unknown_hits = 0
             st.session_state.toast_dismissed = False
@@ -244,7 +243,6 @@ with tab1:
         
         data_placeholder.dataframe(st.session_state.attendance_list.get_live_list(), use_container_width=True, hide_index=True)
 
-    # Initial render
     update_dashboard_ui()
     
     with st.container(border=True):
@@ -273,7 +271,6 @@ with tab1:
                 st.session_state.session_active = True
                 st.session_state.manager.start_attendance_session()
             
-            # Her yeni video/kamera baslatildiginda uyarilari sifirla
             st.session_state.session_unknown_detected = False
             st.session_state.unknown_hits = 0
             st.session_state.toast_dismissed = False
@@ -331,19 +328,15 @@ with tab1:
                             if st.session_state.unknown_hits >= 15:
                                 st.session_state.session_unknown_detected = True
                         else:
-                            # Also reset if there's no unknown in the frame to prevent random jumps 
-                            # accumulating over a long time triggering it
                             st.session_state.unknown_hits = 0
 
                         has_new_update = False
                         for person_id in recognized_ids:
                             if person_id not in ["Unknown", "Bilinmeyen"]:
-                                # Attempt attendance update
                                 success = st.session_state.attendance_list.handle_attendance(person_id)
                                 if success:
                                     has_new_update = True
 
-                        # Sadece belirli bir miktar ust uste bilinmeyen gorduyse anlik kirmizi uyariyi ver
                         if st.session_state.unknown_hits >= 8:
                             alert_placeholder.markdown(
                                 f"<div class='alert-box'>{t('security_alert')}</div>",
@@ -355,7 +348,6 @@ with tab1:
                         rgb_frame = cv2.cvtColor(processed_frame, cv2.COLOR_BGR2RGB)
                         video_placeholder.image(rgb_frame, channels="RGB", use_container_width=True)
 
-                        # Update UI stats and tables live ONLY when a new student is marked present
                         if has_new_update:
                             update_dashboard_ui()
                         time.sleep(0.01)
@@ -408,18 +400,17 @@ with tab2:
                         f.write(uploaded_img.read())
                     st.success(t("saved_image", filename=filename))
                     
-                    # Trigger the Encoding process
                     with st.spinner(t("training")):
                         res = subprocess.run([sys.executable, "encoding.py"], capture_output=True, text=True)
                         
                         if res.returncode == 0:
                             st.success(t("encoding_ok"))
                             
-                            # Resync Manager & Reload Analyzer into state
+                            
                             st.session_state.manager.sync_from_folder()
                             st.session_state.analyzer = FaceAnalyzer()
                             
-                            # Update Tracker Metrics
+             
                             st.session_state.total_students = len(st.session_state.manager.students_df)
                             
                             time.sleep(2)

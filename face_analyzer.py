@@ -44,14 +44,13 @@ class FaceAnalyzer:
         """
         Calculates Cosine Similarity between two vectors and scales it to 0-100%.
         """
-        # Fix vector lengths to 1 (Normalize)
+       
         vec1 = embedding1 / np.linalg.norm(embedding1)
         vec2 = embedding2 / np.linalg.norm(embedding2)
 
-        # Calculate pure similarity
+      
         sim = np.dot(vec1, vec2)
 
-        # Convert to percentage (Treat negative values as 0)
         return max(0, sim) * 100
 
     def process_frame(self, frame):
@@ -59,7 +58,7 @@ class FaceAnalyzer:
         Takes a single frame, finds faces, draws boxes, and returns the processed frame.
         Also returns a list of recognized school numbers (or names) in this frame.
         """
-        recognized_ids = []  # List of recognized people in this frame
+        recognized_ids = [] 
         faces = self.app.get(frame)
 
         for face in faces:
@@ -67,7 +66,6 @@ class FaceAnalyzer:
             best_match = "Unknown"
             max_similarity = 0.0
 
-            # Compare against everyone in the database
             for name in self.known_names:
                 db_embedding = self.known_faces_data[name]
                 match_percentage = self.calculate_similarity(
@@ -86,23 +84,22 @@ class FaceAnalyzer:
                     parts = best_match.split("_")
                     if len(parts) >= 2:
                         display_name = f"{parts[0]} {parts[1]}"
-                        recognized_ids.append(parts[-1])  # Add number for attendance
+                        recognized_ids.append(parts[-1])  
                     else:
                         display_name = best_match
                         recognized_ids.append(best_match)
 
                     display_text = f"{display_name} ({max_similarity:.1f}%)"
-                    color = (0, 255, 0)  # Green
+                    color = (0, 255, 0)  
                 elif max_similarity < Config.UNKNOWN_THRESHOLD_PERCENTAGE:
                     display_text = f"Unknown ({max_similarity:.1f}%)"
-                    color = (0, 0, 255)  # Red
+                    color = (0, 0, 255)  
                     recognized_ids.append("Unknown")
                 else:
-                    # Mid-range matches — show as uncertain but do not add to recognized list
                     display_text = f"Uncertain ({max_similarity:.1f}%)"
-                    color = (0, 165, 255)  # Orange
+                    color = (0, 165, 255)  
 
-            # Draw on Screen
+           
             bbox = face.bbox.astype(int)
             cv2.rectangle(frame, (bbox[0], bbox[1]), (bbox[2], bbox[3]), color, 2)
             

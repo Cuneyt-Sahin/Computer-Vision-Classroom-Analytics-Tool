@@ -34,13 +34,12 @@ class StudentManager:
 
         new_student = {"School No": str(school_no), "Full Name": full_name}
 
-        # If there are past attendance columns, this new student wasn't in the system
-        # those days, so we place "-" (or a blank) in those past session columns.
+       
         for col in self.students_df.columns:
             if col not in ["School No", "Full Name"]:
                 new_student[col] = "-"
 
-        # Add the new student to the DataFrame
+       
         self.students_df = pd.concat(
             [self.students_df, pd.DataFrame([new_student])], ignore_index=True
         )

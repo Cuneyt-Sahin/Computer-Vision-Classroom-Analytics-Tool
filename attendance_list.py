@@ -21,7 +21,6 @@ class AttendanceList:
         if student_id not in self.hit_counts:
             self.hit_counts[student_id] = 0
         
-        # Don't increment or process if already recorded
         is_already_present = student_id in self.live_list["School No"].values
         if is_already_present:
             return False
@@ -63,25 +62,25 @@ class AttendanceList:
             self.live_list = self.live_list[self.live_list["School No"] != student_id].copy()
             self.live_list.reset_index(drop=True, inplace=True)
             
-            # Reset hit count
+      
             if student_id in self.hit_counts:
                 del self.hit_counts[student_id]
                 
-            # Decrease count
+  
             self.present_count = max(0, self.present_count - 1)
             found_in_live = True
             
         # Update underlying manager - Completely remove the row and save the excel file
         student_exists = student_id in self.manager.students_df["School No"].values
         if student_exists:
-            # Remove entirely from the main DataFrame
+           
             self.manager.students_df = self.manager.students_df[self.manager.students_df["School No"] != student_id]
             self.manager.students_df.reset_index(drop=True, inplace=True)
             
-            # Instantly save to update the .xlsx file
+            
             self.manager.save_list()
             
-            # Delete the student's image from the folder
+          
             if os.path.exists(Config.IMAGE_FOLDER):
                 for filename in os.listdir(Config.IMAGE_FOLDER):
                     name_part, _ = os.path.splitext(filename)
